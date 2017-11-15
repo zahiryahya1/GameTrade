@@ -1,11 +1,13 @@
 # GameTrade
 A online platform where people can trade games that they dont play for ones that they want to play.
 
-## todo
+## todo (in no particular order)
 
-- integrate igdb api so user can add games 
 - move the google api access to routes/backend. clients doesnt need to see or have access to key.
-- figure out how to get image and send data to front end in a readable format
+- add 'have/want' button for user and update account with a post.
+- add manage account (delete game, change address, change password)
+- display matches on dashbord
+- implement user chat (last)
 
 ## notes
 
