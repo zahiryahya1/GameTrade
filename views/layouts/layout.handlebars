@@ -4,7 +4,12 @@
     <title>GameTrade</title>
     <link rel="stylesheet" href="/css/bootstrap.css" />
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/results.css" />
+
     <script src="/javascripts/layout.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
 </head>
 
 <body>
@@ -14,10 +19,10 @@
                 <ul class="nav nav-pills float-right">
                     {{#if user}}
                         <li class="nav-item">
-                            <a id="dashboard" onclick="Dashboard()" class="nav-link active" href="/">Dashboard <span class="sr-only">(current)</span></a>
+                            <a id="dashboard" onclick="Dashboard()" class="nav-link active" href="/">Dashboard </a>
                         </li>
                         <li class="nav-item">
-                            <a id="edit" onclick="Edit()" class="nav-link" href="#">Edit <span class="sr-only">(current)</span></a>
+                            <a id="edit" onclick="Edit()" class="nav-link" href="/edit">Edit </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/users/logout">Logout</a>

@@ -4,7 +4,7 @@
   "description": "Simple authentication system",
   "main": "index.js",
   "scripts": {
-  	"start": "node app.js",
+    "start": "node app.js",
     "test": "nodemon app.js"
   },
   "author": "Zahir Yahya",
@@ -19,6 +19,7 @@
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",
+    "igdb-api-node": "^3.1.0",
     "mongodb": "*",
     "mongoose": "*",
     "passport": "*",

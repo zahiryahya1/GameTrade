@@ -1,6 +1,6 @@
 // global variables
-var lat;
-var lng;
+var lat = null;
+var lng = null;
 
 /* 
 function currLocation() {

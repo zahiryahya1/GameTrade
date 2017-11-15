@@ -1,0 +1,26 @@
+#search-results.coverflow 
+.game-result{
+	display:inline-block;
+}
+
+
+#search-results.coverflow 
+.game-result .media-body{
+	display:none;
+}
+
+
+#search-results 
+
+.media{
+}
+
+
+.media-left {
+	margin-right: 15px;
+	margin-bottom: 23px;
+}
+
+#search-results img{
+	max-height: 70px;
+}

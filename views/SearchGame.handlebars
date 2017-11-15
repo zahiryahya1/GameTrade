@@ -1,0 +1,21 @@
+
+{{#if errors}}
+    {{#each errors}}
+        <div class = "alert alert-danger">{{msg}}</div>
+    {{/each}}
+{{/if}}
+
+
+<form method="get" action="/Search">
+	<div class="form-group">
+        <label>Title</label>
+        <input type="text" class="form-control" placeholder="Title" name="title" >
+        <button type="submit" value="Click" class="btn btn-default">Submit</button>
+    </div>
+</form>
+
+    <script src="/javascripts/SearchResults.js"></script>
+
+<div id="gameList" class"container">
+
+</div>
