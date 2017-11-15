@@ -59,9 +59,6 @@ function geocodeAddress() {
   .then(function(response) {
     lat = document.getElementById("lat").value = response.data.results[0].geometry.location.lat;
     lng = document.getElementById("lng").value = response.data.results[0].geometry.location.lng;
-    
-    console.log(lat);
-    console.log(lng);
 
     // need this so that the function is completed before submitting the form
     $('#myform').submit();

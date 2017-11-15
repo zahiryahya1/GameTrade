@@ -69,3 +69,17 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
 	});
 }
 
+module.exports.setSession = function (user, req, callback) {
+    req.session.user = user;
+    callback(true);
+}
+
+module.exports.addWant = function(user, want, callback) {
+	user.wantGame.push(want);
+	user.save(callback);
+}
+
+module.exports.addHave = function(user, have, callback) {
+	user.haveGame.push(have);
+	user.save(callback);
+}

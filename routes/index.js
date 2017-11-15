@@ -51,7 +51,6 @@ router.get('/Search', function(req, res) {
 			]
 		).then(function(response) {
 			games = response.body;
-			console.log(games[0]);
 			currList = games;
 			res.render('SearchGame', {title: title, games: games});
 		}).catch(function(error) {
@@ -65,6 +64,7 @@ router.get('/Search', function(req, res) {
 });
 
 router.get('/CurrList', function(req, res) {
+	// check if the req.user already maked the game as have or want. if so, then dont render the button
 	res.send({games: currList, title: currTitle});
 });
 

@@ -113,7 +113,7 @@ passport.deserializeUser(function(id, done) {
 
 // login
 router.post('/login',
-  passport.authenticate('local', {successRedirect:'/', failureRedirect:'/users/login',failureFlash: true}),
+  passport.authenticate('local', {failureRedirect:'/users/login',failureFlash: true}),
   function(req, res) {
     res.redirect('/');
   });
@@ -127,5 +127,35 @@ router.get('/logout', function(req, res) {
 
     res.redirect('/users/login');
 });
+
+// add game to have list
+router.post('/AddHave', function(req, res) {
+    console.log(req.user);
+
+    var user = req.user;
+    var have = {id: req.body.gameID, platform: req.body.platform};
+
+    User.addHave(user, have, function(err, user) {
+        if (err) throw err;
+        console.log(user);
+    });
+    res.redirect('/edit');
+});
+
+
+// add game to want list
+router.post('/AddWant', function(req, res) {
+    console.log(req.user);
+    var user = req.user;
+
+    var want = {id: req.body.gameID, platform: req.body.platform};
+
+    User.addWant(user, want, function(err, user) {
+        if (err) throw err;
+        console.log(user);
+    });
+    res.redirect('/edit');
+});
+
 
 module.exports = router;
