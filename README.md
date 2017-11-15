@@ -4,9 +4,10 @@ A online platform where people can trade games that they dont play for ones that
 ## todo (in no particular order)
 
 - move the google api access to routes/backend. clients doesnt need to see or have access to key.
-- add 'have/want' button for user and update account with a post.
+- add platforms field when searching for games (need to figure out what number maps to what platform)
 - add manage account (delete game, change address, change password)
 - display matches on dashbord
+- need to disable add button if the user already has the game.
 - implement user chat (last)
 
 ## notes
@@ -25,4 +26,6 @@ A online platform where people can trade games that they dont play for ones that
 
 - need to check if the address is a real address when the user registers
 - nav bar not highlighted properly when navigated to different page
-- 
+- when the user goes back a page, the current search was displayed, not the old.
+
+
