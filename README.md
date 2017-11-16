@@ -4,7 +4,7 @@ A online platform where people can trade games that they dont play for ones that
 ## todo (in no particular order)
 
 - move the google api access to routes/backend. clients doesnt need to see or have access to key.
-- add manage account (delete game, change address, change password)
+- add manage account (delete game, change address, change password). create 3 colums to display each section. get req foreach game the user has in session. display the games in a row with pic, title, and delete button. delete sends a post/delete req then refreshes the page without game.
 - display matches on dashbord
 - implement user chat (last)
 
