@@ -139,6 +139,9 @@ router.post('/AddHave', function(req, res) {
         if (err) throw err;
         console.log(user);
     });
+
+    req.flash('success_msg', 'Game has been added to your have list');
+
     res.redirect('/edit');
 });
 
@@ -154,6 +157,9 @@ router.post('/AddWant', function(req, res) {
         if (err) throw err;
         console.log(user);
     });
+
+    req.flash('success_msg', 'Game has been added to your want list');
+
     res.redirect('/edit');
 });
 

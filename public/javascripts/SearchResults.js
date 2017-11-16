@@ -1,5 +1,6 @@
 // 
 $(document).ready(function(){
+	console.log("on page load");
 	updateResults();
 });
 
@@ -11,6 +12,9 @@ function updateResults() {
 	response = $.get('http://localhost:3000/CurrList', {}, function(data) {
 		var games = data.games;
 		var title = data.title;
+		var wantList = data.wantList;
+		var haveList = data.haveList;
+
 		var gameList = document.getElementById('gameList');
 
 		if (games.length == 0) {
@@ -29,8 +33,8 @@ function updateResults() {
 
 
 		// make div for each game in db
-		for(i = 0; i < games.length; i++) {
-			gameItem = createDiv(games[i]);
+		for(var i = 0; i < games.length; i++) {
+			gameItem = createDiv(games[i], wantList, haveList);
 			$('#gameList').append(gameItem);
 		}
 	});
@@ -38,19 +42,40 @@ function updateResults() {
 
 
 // create div for game data
-function createDiv(game) {
-
-/*
-	todo: 
-	1. wrap the buttons with a form, so that when it is clicked, we can post user route
-	2. check if the game is in users list, if so, dont add button
-*/
+function createDiv(game, wantList, haveList) {
 
 	var result, media, mediaLeft, image, 
 	    mediaBody, heading, title, att, 
 	    txt, haveButton, wantButton,
 	    wantForm, haveForm, gameID1, platform1,
 	    gameID2, platform2;
+
+	var gameObj = JSON.stringify({id: game.id.toString(), platform: "100"});
+
+	var wantFlag = false;
+	var haveFlag = false;
+
+	
+	/* stringify the json onject to compare if game is already in user list.
+	   note: does not take into account the order of the properties */
+	for (var i = 0; i < wantList.length; i++) {
+		if ( gameObj == JSON.stringify(wantList[i]) ) {
+			console.log(wantList[i]);
+			wantFlag = true;
+			//break;
+		}
+	}
+
+	// search if game is in have list, then mark flag
+	for (var j = 0; j < haveList.length; j++) {
+		if ( gameObj == JSON.stringify(haveList[j]) ) {
+			console.log(haveList[j]);
+			haveFlag = true;
+			//break;
+		}	
+	}
+	
+
 
 	result = document.createElement("div");
 	result.className = "game-result";
@@ -215,9 +240,10 @@ function createDiv(game) {
 	att.value = "submit";
 	wantButton.setAttributeNode(att);
 
-	//att = document.createAttribute("onclick"); 
-	//att.value = "wantGame()";
-	//wantButton.setAttributeNode(att);
+	if (wantFlag) {
+		att = document.createAttribute("disabled"); 
+		wantButton.setAttributeNode(att);
+	}
 
 	att = document.createAttribute("value"); 
 	att.value = "Want";
@@ -233,9 +259,10 @@ function createDiv(game) {
 	att.value = "submit";
 	haveButton.setAttributeNode(att);
 
-	//att = document.createAttribute("onclick"); 
-	//att.value = "haveGame()";
-	//wantButton.setAttributeNode(att);
+	if (haveFlag) {
+		att = document.createAttribute("disabled"); 
+		haveButton.setAttributeNode(att);
+	}
 
 	att = document.createAttribute("value"); 
 	att.value = "Have";
@@ -254,8 +281,6 @@ function createDiv(game) {
 	haveForm.appendChild(platform1);
 	haveForm.appendChild(haveButton);
 
-	haveForm.submit();
-
 	wantForm.appendChild(gameID2);
 	wantForm.appendChild(platform2);
 	wantForm.appendChild(wantButton);
@@ -268,3 +293,33 @@ function createDiv(game) {
 
 	return result;
 }
+
+
+/**
+ * not so simple check for object equality
+ */
+var equal = function(a, b) {
+    function check(a, b) {
+        for (var attr in a) {
+            if (a.hasOwnProperty(attr) && b.hasOwnProperty(attr)) {
+                if (a[attr] != b[attr]) {
+                    switch (a[attr].constructor) {
+                        case Object:
+                            return equal(a[attr], b[attr]);
+                        case Function:
+                            if (a[attr].toString() != b[attr].toString()) {
+                                return false;
+                            }
+                            break;
+                        default:
+                            return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    };
+    return check(a, b) && check(b, a);
+};

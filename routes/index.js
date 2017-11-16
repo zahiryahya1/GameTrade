@@ -16,7 +16,7 @@ router.get('/', ensureAuthenticated, function(req, res){
 });
 
 // Get edit
-router.get('/edit', function(req, res) {
+router.get('/edit', ensureAuthenticated, function(req, res) {
 	res.render('edit');
 });
 
@@ -28,7 +28,7 @@ router.get('/SearchGame', function(req, res) {
 // get game
 // should use res.send(data) then in js file, 
 // call $.get(.../SearchGame, function(data) { create div for each game })
-router.get('/Search', function(req, res) {
+router.get('/Search', ensureAuthenticated, function(req, res) {
 	var title = req.query.title;
 	currTitle = title;
 	var games;
@@ -63,9 +63,14 @@ router.get('/Search', function(req, res) {
 	}
 });
 
-router.get('/CurrList', function(req, res) {
+router.get('/CurrList', ensureAuthenticated, function(req, res) {
 	// check if the req.user already maked the game as have or want. if so, then dont render the button
-	res.send({games: currList, title: currTitle});
+	res.send({
+				games: currList,
+				title: currTitle, 
+				haveList: req.user.haveGame,
+				wantList: req.user.wantGame 
+			});
 });
 
 function ensureAuthenticated(req, res, next) {
