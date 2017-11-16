@@ -7,7 +7,6 @@ A online platform where people can trade games that they dont play for ones that
 - add platforms field when searching for games (need to figure out what number maps to what platform)
 - add manage account (delete game, change address, change password)
 - display matches on dashbord
-- need to disable add button if the user already has the game.
 - implement user chat (last)
 
 ## notes
