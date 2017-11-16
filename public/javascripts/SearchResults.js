@@ -45,7 +45,7 @@ function updateResults() {
 
 			for(var j = 0; j < games[i].platforms.length; j++) {
 				if (games[i].platforms[j].toString() == platform) {
-					gameItem = createDiv(games[i], wantList, haveList);
+					gameItem = createDiv(games[i], platform, wantList, haveList);
 					$('#gameList').append(gameItem);
 					count++;
 				}
@@ -58,7 +58,7 @@ function updateResults() {
 
 
 // create div for game data
-function createDiv(game, wantList, haveList) {
+function createDiv(game, platform, wantList, haveList) {
 
 	var result, media, mediaLeft, image, 
 	    mediaBody, heading, title, att, 
@@ -66,7 +66,7 @@ function createDiv(game, wantList, haveList) {
 	    wantForm, haveForm, gameID1, platform1,
 	    gameID2, platform2;
 
-	var gameObj = JSON.stringify({id: game.id.toString(), platform: "100"});
+	var gameObj = JSON.stringify({id: game.id.toString(), platform: platform});
 
 	var wantFlag = false;
 	var haveFlag = false;
@@ -205,7 +205,7 @@ function createDiv(game, wantList, haveList) {
 	platform1.setAttributeNode(att);
 
 	att = document.createAttribute("value"); 
-	att.value = 100;
+	att.value = platform;
 	platform1.setAttributeNode(att);
 
 	platform2 = document.createElement("input");
@@ -224,7 +224,7 @@ function createDiv(game, wantList, haveList) {
 	platform2.setAttributeNode(att);
 
 	att = document.createAttribute("value"); 
-	att.value = 100;
+	att.value = platform;
 	platform2.setAttributeNode(att);
 
 
@@ -308,32 +308,3 @@ function createDiv(game, wantList, haveList) {
 	return result;
 }
 
-
-/**
- * not so simple check for object equality
- */
-var equal = function(a, b) {
-    function check(a, b) {
-        for (var attr in a) {
-            if (a.hasOwnProperty(attr) && b.hasOwnProperty(attr)) {
-                if (a[attr] != b[attr]) {
-                    switch (a[attr].constructor) {
-                        case Object:
-                            return equal(a[attr], b[attr]);
-                        case Function:
-                            if (a[attr].toString() != b[attr].toString()) {
-                                return false;
-                            }
-                            break;
-                        default:
-                            return false;
-                    }
-                }
-            } else {
-                return false;
-            }
-        }
-        return true;
-    };
-    return check(a, b) && check(b, a);
-};
