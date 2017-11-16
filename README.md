@@ -4,7 +4,6 @@ A online platform where people can trade games that they dont play for ones that
 ## todo (in no particular order)
 
 - move the google api access to routes/backend. clients doesnt need to see or have access to key.
-- add platforms field when searching for games (need to figure out what number maps to what platform)
 - add manage account (delete game, change address, change password)
 - display matches on dashbord
 - implement user chat (last)
