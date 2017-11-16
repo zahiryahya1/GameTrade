@@ -14,6 +14,9 @@ function updateResults() {
 		var title = data.title;
 		var wantList = data.wantList;
 		var haveList = data.haveList;
+		var platform = data.platform;
+		var count = 0;
+		var att;
 
 		var gameList = document.getElementById('gameList');
 
@@ -26,7 +29,10 @@ function updateResults() {
 		$('#gameList').empty();
 		var para = document.createElement("P");
 		para.className = "mar-md-bottom text-muted";
-		var t = document.createTextNode(games.length + " results for \"" + title + "\"");
+		att = document.createAttribute("id"); 
+		att.value = "count";
+		para.setAttributeNode(att);
+		var t = document.createTextNode("temp");
 		para.appendChild(t);
 		$('#gameList').append(para);
 
@@ -34,9 +40,19 @@ function updateResults() {
 
 		// make div for each game in db
 		for(var i = 0; i < games.length; i++) {
-			gameItem = createDiv(games[i], wantList, haveList);
-			$('#gameList').append(gameItem);
+			// check if the games platforms match with the user platform
+			if (games[i].platforms == undefined) continue;
+
+			for(var j = 0; j < games[i].platforms.length; j++) {
+				if (games[i].platforms[j].toString() == platform) {
+					gameItem = createDiv(games[i], wantList, haveList);
+					$('#gameList').append(gameItem);
+					count++;
+				}
+			}
 		}
+
+		document.getElementById('count').innerHTML = count + " results for \"" + title + "\"";
 	});
 } 
 
@@ -60,7 +76,6 @@ function createDiv(game, wantList, haveList) {
 	   note: does not take into account the order of the properties */
 	for (var i = 0; i < wantList.length; i++) {
 		if ( gameObj == JSON.stringify(wantList[i]) ) {
-			console.log(wantList[i]);
 			wantFlag = true;
 			//break;
 		}
@@ -69,7 +84,6 @@ function createDiv(game, wantList, haveList) {
 	// search if game is in have list, then mark flag
 	for (var j = 0; j < haveList.length; j++) {
 		if ( gameObj == JSON.stringify(haveList[j]) ) {
-			console.log(haveList[j]);
 			haveFlag = true;
 			//break;
 		}	

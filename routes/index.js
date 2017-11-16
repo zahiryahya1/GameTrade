@@ -9,6 +9,7 @@ const client = igdb('526cff9688c39641554c80315c09d76a');
 */
 var currList = [];
 var currTitle;
+var platform;
 
 // Get homepage
 router.get('/', ensureAuthenticated, function(req, res){
@@ -31,6 +32,8 @@ router.get('/SearchGame', function(req, res) {
 router.get('/Search', ensureAuthenticated, function(req, res) {
 	var title = req.query.title;
 	currTitle = title;
+	platform = req.query.platform;
+
 	var games;
 
 	if (title) {
@@ -52,7 +55,7 @@ router.get('/Search', ensureAuthenticated, function(req, res) {
 		).then(function(response) {
 			games = response.body;
 			currList = games;
-			res.render('SearchGame', {title: title, games: games});
+			res.render('SearchGame', {title: title});
 		}).catch(function(error) {
 	    throw error;
 		});
@@ -67,7 +70,8 @@ router.get('/CurrList', ensureAuthenticated, function(req, res) {
 	// check if the req.user already maked the game as have or want. if so, then dont render the button
 	res.send({
 				games: currList,
-				title: currTitle, 
+				title: currTitle,
+				platform: platform,
 				haveList: req.user.haveGame,
 				wantList: req.user.wantGame 
 			});
