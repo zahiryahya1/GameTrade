@@ -25,5 +25,5 @@ A online platform where people can trade games that they dont play for ones that
 - need to check if the address is a real address when the user registers
 - nav bar not highlighted properly when navigated to different page
 - when the user goes back a page, the current search was displayed, not the old.
-
+- after a user searches for a game, the platform resets to pc instead of remaining previous value.
 
