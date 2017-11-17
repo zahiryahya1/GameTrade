@@ -49,8 +49,7 @@ router.get('/Search', ensureAuthenticated, function(req, res) {
 			[
 	    		'name',
 	   			'cover',
-	   			'screenshots',
-	   			'platforms'
+	   			'platforms',
 			]
 		).then(function(response) {
 			games = response.body;

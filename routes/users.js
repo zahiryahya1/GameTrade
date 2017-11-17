@@ -166,5 +166,14 @@ router.post('/AddWant', function(req, res) {
     res.redirect('/edit');
 });
 
+router.get('/getUserData', function(req, res) {
+    // sanity check, should never be undefined
+    if (req.user == undefined)
+        data = undefined;
+    else 
+        var data = {haveGame: req.user.haveGame, wantGame: req.user.wantGame};
+    res.send(data);
+});
+
 
 module.exports = router;

@@ -10,6 +10,7 @@ $(document).ready(function(){
 function updateResults() {
 	// fetch data on each game from igdb
 	response = $.get('http://localhost:3000/CurrList', {}, function(data) {
+
 		var games = data.games;
 		var title = data.title;
 		var wantList = data.wantList;
@@ -69,7 +70,13 @@ function createDiv(game, platform, wantList, haveList) {
 	    img1, img2,
 	    name1, name2;
 
-	var gameObj = JSON.stringify({id: game.id.toString(), name: game.name, platform: platform, cover_img: game.cover.url});
+	var url;
+	if (game.cover == undefined)
+		url = "//images.igdb.com/igdb/image/upload/t_cover_small/nocover_qhhlj6.jpg";
+	else 
+		url = "//images.igdb.com/igdb/image/upload/t_cover_small/" + game.cover.cloudinary_id;
+
+	var gameObj = JSON.stringify({id: game.id.toString(), name: game.name, platform: platform, cover_img: url});
 
 	var wantFlag = false;
 	var haveFlag = false;
@@ -119,12 +126,12 @@ function createDiv(game, platform, wantList, haveList) {
 	att = document.createAttribute("src"); 
 
 	if (game.cover) {
-		att.value = game.cover.url;
+		att.value = "//images.igdb.com/igdb/image/upload/t_cover_small/" + game.cover.cloudinary_id;
 		image.setAttributeNode(att);
 		image.setAttributeNode(att);
 	}
 	else {
-		att.value = "//images.igdb.com/igdb/image/upload/t_thumb/nocover_qhhlj6.jpg";
+		att.value = "//images.igdb.com/igdb/image/upload/t_cover_small/nocover_qhhlj6.jpg";
 		image.setAttributeNode(att);
 	}
 
@@ -293,7 +300,14 @@ function createDiv(game, platform, wantList, haveList) {
 	img1.setAttributeNode(att);
 
 	att = document.createAttribute("value"); 
-	att.value = game.cover.url;
+
+	if (game.cover == undefined) {
+		att.value = "//images.igdb.com/igdb/image/upload/t_cover_small/nocover_qhhlj6.jpg";
+	}
+	else {
+		att.value = "//images.igdb.com/igdb/image/upload/t_cover_small/" + game.cover.cloudinary_id;
+	}
+
 	img1.setAttributeNode(att);
 
 	img2 = document.createElement("input");
@@ -311,7 +325,14 @@ function createDiv(game, platform, wantList, haveList) {
 	img2.setAttributeNode(att);
 
 	att = document.createAttribute("value"); 
-	att.value = game.cover.url;
+
+	if (game.cover == undefined) {
+		att.value = "//images.igdb.com/igdb/image/upload/t_cover_small/nocover_qhhlj6.jpg";
+	}
+	else {
+		att.value = "//images.igdb.com/igdb/image/upload/t_cover_small/" + game.cover.cloudinary_id;
+	}
+
 	img2.setAttributeNode(att);
 
 
