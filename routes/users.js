@@ -36,6 +36,9 @@ router.post('/register', function (req, res) {
     req.checkBody('email', 'Email is required').notEmpty();
     req.checkBody('email', 'Emial is not valid').isEmail();
 
+    req.checkBody('location', 'You entered a bad address').equals("good");
+
+
     // need to check if it is an actual city and state, using google api
     // can fix state by adding a scrolling/select
     // can fix city the same way

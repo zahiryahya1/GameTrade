@@ -57,8 +57,20 @@ function geocodeAddress() {
     }
   })
   .then(function(response) {
-    lat = document.getElementById("lat").value = response.data.results[0].geometry.location.lat;
-    lng = document.getElementById("lng").value = response.data.results[0].geometry.location.lng;
+
+    console.log(response);
+
+    if (response.data.status === "ZERO_RESULTS") {
+      console.log('geocode failed! Bad address');
+      document.getElementById("location").value = "bad";
+    }
+
+    else {
+
+      lat = document.getElementById("lat").value = response.data.results[0].geometry.location.lat;
+      lng = document.getElementById("lng").value = response.data.results[0].geometry.location.lng;
+      document.getElementById("location").value = "good";
+    }
 
     // need this so that the function is completed before submitting the form
     $('#myform').submit();
