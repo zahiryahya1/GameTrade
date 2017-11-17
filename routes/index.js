@@ -17,18 +17,18 @@ router.get('/', ensureAuthenticated, function(req, res){
 });
 
 // Get edit
-router.get('/edit', ensureAuthenticated, function(req, res) {
+router.get('/edit', function(req, res) {
 	res.render('edit');
 });
+
 
 // get Search Game
 router.get('/SearchGame', function(req, res) {
 	res.send('SearchGame');
 });
 
-// get game
-// should use res.send(data) then in js file, 
-// call $.get(.../SearchGame, function(data) { create div for each game })
+
+// could move igdb api call this into /CurrList route to simplify code
 router.get('/Search', ensureAuthenticated, function(req, res) {
 	var title = req.query.title;
 	currTitle = title;
@@ -76,6 +76,7 @@ router.get('/CurrList', ensureAuthenticated, function(req, res) {
 				wantList: req.user.wantGame 
 			});
 });
+
 
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {

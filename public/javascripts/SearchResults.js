@@ -62,11 +62,14 @@ function createDiv(game, platform, wantList, haveList) {
 
 	var result, media, mediaLeft, image, 
 	    mediaBody, heading, title, att, 
-	    txt, haveButton, wantButton,
-	    wantForm, haveForm, gameID1, platform1,
-	    gameID2, platform2;
+	    txt, haveButton, wantButton, att2,
+	    wantForm, haveForm, 
+	    gameID1, platform1,
+	    gameID2, platform2,
+	    img1, img2,
+	    name1, name2;
 
-	var gameObj = JSON.stringify({id: game.id.toString(), platform: platform});
+	var gameObj = JSON.stringify({id: game.id.toString(), name: game.name, platform: platform, cover_img: game.cover.url});
 
 	var wantFlag = false;
 	var haveFlag = false;
@@ -98,6 +101,7 @@ function createDiv(game, platform, wantList, haveList) {
 
 	media = document.createElement("div");
 	media.className = "media overflow relative";
+
 	att = document.createAttribute("data-original-title"); 
 	att.value = game.name;
 	media.setAttributeNode(att);
@@ -111,20 +115,25 @@ function createDiv(game, platform, wantList, haveList) {
 
 	// add thumb tag if exists
 	image = document.createElement("img");
+
 	att = document.createAttribute("src"); 
+
 	if (game.cover) {
 		att.value = game.cover.url;
+		image.setAttributeNode(att);
+		image.setAttributeNode(att);
 	}
 	else {
 		att.value = "//images.igdb.com/igdb/image/upload/t_thumb/nocover_qhhlj6.jpg";
+		image.setAttributeNode(att);
 	}
-	image.setAttributeNode(att);
 
 	mediaBody = document.createElement("div");
 	mediaBody.className = "media-body";
 
 	heading = document.createElement("h4");
 	heading.className = "media-heading";
+
 
 	title = document.createElement("span");
 	txt = document.createTextNode(game.name);
@@ -229,6 +238,84 @@ function createDiv(game, platform, wantList, haveList) {
 
 
 
+	// create hiden game name input
+	name1 = document.createElement("input");
+
+	att = document.createAttribute("type"); 
+	att.value = "hidden";
+	name1.setAttributeNode(att);
+
+	att = document.createAttribute("id"); 
+	att.value = "name";
+	name1.setAttributeNode(att);
+
+	att = document.createAttribute("name"); 
+	att.value = "name";
+	name1.setAttributeNode(att);
+
+	att = document.createAttribute("value"); 
+	att.value = game.name;
+	name1.setAttributeNode(att);
+
+	name2 = document.createElement("input");
+
+	att = document.createAttribute("type"); 
+	att.value = "hidden";
+	name2.setAttributeNode(att);
+
+	att = document.createAttribute("id"); 
+	att.value = "game";
+	name2.setAttributeNode(att);
+
+	att = document.createAttribute("name"); 
+	att.value = "name";
+	name2.setAttributeNode(att);
+
+	att = document.createAttribute("value"); 
+	att.value = game.name;
+	name2.setAttributeNode(att);
+
+
+
+	// create hiden game img input
+	img1 = document.createElement("input");
+
+	att = document.createAttribute("type"); 
+	att.value = "hidden";
+	img1.setAttributeNode(att);
+
+	att = document.createAttribute("id"); 
+	att.value = "img";
+	img1.setAttributeNode(att);
+
+	att = document.createAttribute("name"); 
+	att.value = "cover_img";
+	img1.setAttributeNode(att);
+
+	att = document.createAttribute("value"); 
+	att.value = game.cover.url;
+	img1.setAttributeNode(att);
+
+	img2 = document.createElement("input");
+
+	att = document.createAttribute("type"); 
+	att.value = "hidden";
+	img2.setAttributeNode(att);
+
+	att = document.createAttribute("id"); 
+	att.value = "img";
+	img2.setAttributeNode(att);
+
+	att = document.createAttribute("name"); 
+	att.value = "cover_img";
+	img2.setAttributeNode(att);
+
+	att = document.createAttribute("value"); 
+	att.value = game.cover.url;
+	img2.setAttributeNode(att);
+
+
+
 	// create have form
 	haveForm = document.createElement("form");
 
@@ -293,10 +380,14 @@ function createDiv(game, platform, wantList, haveList) {
 
 	haveForm.appendChild(gameID1);
 	haveForm.appendChild(platform1);
+	haveForm.appendChild(name1);
+	haveForm.appendChild(img1);
 	haveForm.appendChild(haveButton);
 
 	wantForm.appendChild(gameID2);
 	wantForm.appendChild(platform2);
+	wantForm.appendChild(name2);
+	wantForm.appendChild(img2);
 	wantForm.appendChild(wantButton);
 
 	mediaBody.appendChild(wantForm);

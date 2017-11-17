@@ -133,7 +133,7 @@ router.post('/AddHave', function(req, res) {
     console.log(req.user);
 
     var user = req.user;
-    var have = {id: req.body.gameID, platform: req.body.platform};
+    var have = {id: req.body.gameID, name: req.body.name, platform: req.body.platform, cover_img: req.body.cover_img};
 
     User.addHave(user, have, function(err, user) {
         if (err) throw err;
@@ -151,7 +151,7 @@ router.post('/AddWant', function(req, res) {
     console.log(req.user);
     var user = req.user;
 
-    var want = {id: req.body.gameID, platform: req.body.platform};
+    var want = {id: req.body.gameID, name: req.body.name, platform: req.body.platform, cover_img: req.body.cover_img};
 
     User.addWant(user, want, function(err, user) {
         if (err) throw err;
