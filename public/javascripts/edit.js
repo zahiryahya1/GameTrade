@@ -24,14 +24,14 @@ function getUserData() {
 
 		if (wantList != undefined) {
 			for (var i = 0; i < wantList.length; i++) {
-				gameItem = createListItem(wantList[i]);
+				gameItem = createListItem(wantList[i], true);
 				$('#wantList').append(gameItem);
 			}
 		}
 
 		if (haveList != undefined) {
 			for (var i = 0; i < haveList.length; i++) {
-				gameItem = createListItem(haveList[i]);
+				gameItem = createListItem(haveList[i], false);
 				$('#haveList').append(gameItem);
 			}
 		}
@@ -40,7 +40,7 @@ function getUserData() {
 }
 
 
-function createListItem(game) {
+function createListItem(game, wantFlag) {
 	
 	var result, media, mediaLeft, image, 
 		mediaBody, txt, heading, platform, 
@@ -90,8 +90,7 @@ function createListItem(game) {
 	platform = document.createElement("small");
 	platform.className = "game-shortdate text-muted";
 
-	var platformTxt = convertPlatformToString(game.platform);
-
+	var platformTxt = " (" + convertPlatformToString(game.platform) + ")";
 	txt = document.createTextNode(platformTxt);
 	platform.appendChild(txt);
 
@@ -109,7 +108,12 @@ function createListItem(game) {
 	deleteForm.setAttributeNode(att);
 
 	att = document.createAttribute("action"); 
-	att.value = "/users/DeleteGame";
+
+	if (wantFlag) 
+		att.value = "/users/DeleteGame/Want";
+	else 
+		att.value = "/users/DeleteGame/Have";
+
 	deleteForm.setAttributeNode(att);
 
 
@@ -122,16 +126,16 @@ function createListItem(game) {
 	nameID.setAttributeNode(att);
 
 	att = document.createAttribute("id"); 
-	att.value = "name";
+	att.value = "gameID";
 	nameID.setAttributeNode(att);
 
 
 	att = document.createAttribute("name"); 
-	att.value = "name";
+	att.value = "gameID";
 	nameID.setAttributeNode(att);
 
 	att = document.createAttribute("value"); 
-	att.value = game.name;
+	att.value = game.id;
 	nameID.setAttributeNode(att);
 
 
@@ -144,12 +148,12 @@ function createListItem(game) {
 	platformID.setAttributeNode(att);
 
 	att = document.createAttribute("id"); 
-	att.value = "platform";
+	att.value = "platformID";
 	platformID.setAttributeNode(att);
 
 
 	att = document.createAttribute("name"); 
-	att.value = "platform";
+	att.value = "platformID";
 	platformID.setAttributeNode(att);
 
 	att = document.createAttribute("value"); 

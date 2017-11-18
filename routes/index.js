@@ -17,13 +17,13 @@ router.get('/', ensureAuthenticated, function(req, res){
 });
 
 // Get edit
-router.get('/edit', function(req, res) {
+router.get('/edit', ensureAuthenticated, function(req, res) {
 	res.render('edit');
 });
 
 
 // get Search Game
-router.get('/SearchGame', function(req, res) {
+router.get('/SearchGame', ensureAuthenticated, function(req, res) {
 	res.send('SearchGame');
 });
 

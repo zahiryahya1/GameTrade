@@ -83,3 +83,29 @@ module.exports.addHave = function(user, have, callback) {
 	user.haveGame.push(have);
 	user.save(callback);
 }
+
+module.exports.removeGameFromHave = function(user, game, callback) {
+
+	User.update( { _id: user.id },
+                 { "$pull": { "haveGame": { "id": game.id, "platform": game.platID } }},
+                 { safe: true, multi: false },
+                 function(err, obj) {
+                 	if (err) throw err;
+                 	console.log('game removed.');
+                 	console.log('obj: ', obj);
+                });
+	user.save(callback);
+}
+
+module.exports.removeGameFromWant = function(user, game, callback) {
+
+	User.update( { _id: user.id },
+                 { "$pull": { "wantGame": { "id": game.id, "platform": game.platID } }},
+                 { safe: true, multi: false },
+                 function(err, ) {
+                 	if (err) throw err;
+                 	console.log('game removed.');
+                 	console.log('obj: ', obj);                
+                });
+	user.save(callback);
+}

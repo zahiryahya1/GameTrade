@@ -176,4 +176,36 @@ router.get('/getUserData', function(req, res) {
 });
 
 
+// delete game from users want list
+router.post('/DeleteGame/Want', function(req, res) {
+    var user = req.user;
+
+    var game = {id: req.body.gameID, platID: req.body.platformID};
+    console.log(game);
+
+    User.removeGameFromWant(user, game, function(err, user) {
+        if (err) throw err;
+        console.log(user);
+    });
+
+    res.redirect('/edit');
+});
+
+
+// delete game from users have list
+router.post('/DeleteGame/Have', function(req, res) {
+    var user = req.user;
+
+    var game = {id: req.body.gameID, platID: req.body.platformID};
+    console.log(game);
+
+    User.removeGameFromHave(user, game, function(err, user) {
+        if (err) throw err;
+        console.log(user);
+    });
+
+    res.redirect('/edit');
+});
+
+
 module.exports = router;
