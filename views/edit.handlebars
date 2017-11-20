@@ -1,4 +1,4 @@
-
+ 
 <h2 class="page-header">Edit</h2>
 <p>Manage account</p>
 
@@ -19,7 +19,7 @@
     	<h4>Update Account</h4>
 
 
-<form id="myform" method="post" action="#">
+<form id="myform" method="post" action="/users/UpdateAccount">
     <div class="form-group">
         <label>Address</label>
         <input id="address" type="text" class="form-control" placeholder="Address" name="address" >
@@ -42,6 +42,8 @@
     </div>
     <input type="hidden" id="lat" name="lat" value=>
     <input type="hidden" id="lng" name="lng" value=>
+    <input type="hidden" id="location" name="location" value=>
+
     <button type="button" onclick="geocodeAddress()" class="btn btn-default">Submit</button>
 </form>
 

@@ -49,6 +49,12 @@ function geocodeAddress() {
     fullAddress += (" " + state);
   }
 
+  if(fullAddress == "") {
+    document.getElementById("location").value = "bad";
+    $('#myform').submit();
+
+  }
+
   /* converts address into lat and lng */
   axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
     params:{

@@ -102,10 +102,40 @@ module.exports.removeGameFromWant = function(user, game, callback) {
 	User.update( { _id: user.id },
                  { "$pull": { "wantGame": { "id": game.id, "platform": game.platID } }},
                  { safe: true, multi: false },
-                 function(err, ) {
+                 function(err, obj) {
                  	if (err) throw err;
                  	console.log('game removed.');
                  	console.log('obj: ', obj);                
+                });
+	user.save(callback);
+}
+
+module.exports.updatePassword = function(user, password, callback) {
+	// encrypt the password
+	var salt = bcrypt.genSaltSync(10);
+	var hash = bcrypt.hashSync(password, salt);
+
+	User.update( { _id: user.id },
+				 {"$set": { "password": hash } },
+				 { safe: true, multi: false },
+				 function(err, obj) {
+                 	if (err) throw err;
+                 	console.log('Account Password Updated.');
+                 	console.log('obj: ', obj);
+                });
+
+
+	user.save(callback);
+}
+
+module.exports.updateLocation = function(user, location, callback) {
+	User.update( { _id: user.id },
+				 {"$set": { "location": location } },
+				 { safe: true, multi: false },
+				 function(err, obj) {
+                 	if (err) throw err;
+                 	console.log('Account Location Updated.');
+                 	console.log('obj: ', obj);
                 });
 	user.save(callback);
 }

@@ -20,6 +20,13 @@ router.get('/login', function (req, res) {
 
 // Register User
 router.post('/register', function (req, res) {
+    req.sanitize('city').trim();
+    req.sanitize('state').trim();
+    req.sanitize('address').trim();
+    req.sanitize('username').trim();
+    req.sanitize('email').trim();
+    req.sanitize('name').trim();
+
     var name = req.body.name;
     var email = req.body.email;
     var username = req.body.username;
@@ -83,6 +90,136 @@ router.post('/register', function (req, res) {
 });
 
 
+// update account
+router.post('/UpdateAccount', function(req, res) {
+    req.sanitize('city').trim();
+    req.sanitize('state').trim();
+    req.sanitize('address').trim();
+
+
+    var password = req.body.password;
+    var password2 = req.body.password2;
+    var address = req.body.address;
+    var city = req.body.city;
+    var state = req.body.state;
+    var lat = req.body.lat;
+    var lng = req.body.lng;
+    var addy = true;
+    var citystate = false;
+
+    // validation
+
+    // if address is given, we need city and state
+    if (address.length != 0) {
+        if (city.length == 0 && state.length == 0) {
+            req.checkBody('city', 'City and State are both required').notEmpty();
+            addy = false;
+        }
+
+        else if (city.length == 0 || state.length == 0) {
+            if (city.length == 0)
+                req.checkBody('city', 'City and State are both required').notEmpty();
+            else 
+                req.checkBody('state', 'City and State are both required').notEmpty();
+
+            addy = false;
+        }
+    }
+
+    if (city.length != 0 || state.length != 0)
+        citystate = true;
+
+    // if city or state is give, the other must be given as well
+    // if both are empty that fine
+    if (citystate && addy && (city.length == 0 || state.length == 0) ) {
+        if (city.length == 0)
+            req.checkBody('city', 'City and State are both required').notEmpty();
+        else 
+            req.checkBody('state', 'City and State are both required').notEmpty();
+
+        addy = false;
+    }
+
+
+    // if password is given, then the new password is required
+    // if non are given, skip
+    if (password.length != 0 || password2 != 0) {
+        if (password2.length == 0) {
+           req.checkBody('password2', 'Please confirm password').notEmpty(); 
+        }
+        else
+            req.checkBody('password2', 'Passwords do not match').equals(password);
+    }
+
+
+    // if address is good, check if location is real
+    if (addy && (!(address.length == 0 && state.length == 0 && city.length == 0)) &&
+        (
+            (address.length != 0 && state.length != 0 && city.length != 0) || 
+            (address.length == 0 && state.length != 0 ** city.length != 0)
+        ) 
+       )
+        req.checkBody('location', 'You entered a bad address').equals("good");
+
+
+    var errors = req.validationErrors();
+
+    // if nothing is set, return
+    if ((address.length == 0 && state.length == 0 && city.length == 0) &&
+        password.length == 0 && password2.length == 0) {
+        res.redirect('/edit');
+    }
+
+    if (errors) {
+        res.render('edit', {
+            errors: errors
+        });
+    }
+    else {
+        
+        var updateAddy = false;
+
+
+        // update password
+        if (password.length != 0) {
+            User.updatePassword(req.user, password, function(err, user) {
+                if (err) throw err;
+                console.log(user);
+            });
+        }
+
+        // update location using address
+        if (address.length != 0) {
+            var location = {
+                address: address,
+                city: city,
+                state: state,
+                lat: lat,
+                lng: lng
+            }
+        }
+        else if (state.length != 0 && city.length != 0) {
+            var location = {
+                address: address,
+                city: city,
+                state: state,
+                lat: lat,
+                lng: lng
+            }
+
+            User.updateLocation(req.user, location, function(err, user) {
+                if (err) throw err;
+                console.log(user);
+            });
+        }
+
+        req.flash('success_msg', 'You account has been updated');
+
+        res.redirect('/edit');
+    }
+});
+
+
 passport.use(new LocalStrategy(
   function(username, password, done) {
     User.getUserByUsername(username, function(err, user) {
@@ -133,7 +270,6 @@ router.get('/logout', function(req, res) {
 
 // add game to have list
 router.post('/AddHave', function(req, res) {
-    console.log(req.user);
 
     var user = req.user;
     var have = {id: req.body.gameID, name: req.body.name, platform: req.body.platform, cover_img: req.body.cover_img};
@@ -151,7 +287,6 @@ router.post('/AddHave', function(req, res) {
 
 // add game to want list
 router.post('/AddWant', function(req, res) {
-    console.log(req.user);
     var user = req.user;
 
     var want = {id: req.body.gameID, name: req.body.name, platform: req.body.platform, cover_img: req.body.cover_img};
@@ -181,7 +316,6 @@ router.post('/DeleteGame/Want', function(req, res) {
     var user = req.user;
 
     var game = {id: req.body.gameID, platID: req.body.platformID};
-    console.log(game);
 
     User.removeGameFromWant(user, game, function(err, user) {
         if (err) throw err;
@@ -197,7 +331,6 @@ router.post('/DeleteGame/Have', function(req, res) {
     var user = req.user;
 
     var game = {id: req.body.gameID, platID: req.body.platformID};
-    console.log(game);
 
     User.removeGameFromHave(user, game, function(err, user) {
         if (err) throw err;
