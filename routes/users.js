@@ -7,6 +7,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 
+
 // Register
 router.get('/register', function (req, res) {
     res.render('register');
@@ -73,9 +74,11 @@ router.post('/register', function (req, res) {
                 address: address,
                 city: city,
                 state: state,
-                lng: lng,
-                lat: lat
-            }
+                //lng: lng,
+                //lat: lat
+            },
+            geo:
+                [lng, lat]
     	});
 
     	User.createUser(newUser, function(err, user){
@@ -341,4 +344,49 @@ router.post('/DeleteGame/Have', function(req, res) {
 });
 
 
+// get list of users within given radius
+router.get('/UsersInRadius', function(req, res) {
+    var list;
+    var radius = req.query.radius;
+    var lat = req.user.geo[1];
+    var lng = req.user.geo[0];
+
+
+    var mileToKilometer = 1.60934; // conversion from miles to km
+    var kilometerToMeter = 1000;
+    var maxDist = mileToKilometer * radius; 
+
+    // we need to convert the distance to radians
+    maxDist *= kilometerToMeter; 
+
+    // get coordinates [ <longitude> , <latitude> ]
+    var coords = [];
+    coords[0] = lng;
+    coords[1] = lat;
+
+    // might want to move this to the user model to make code cleaner
+    var query = User.find( {
+        geo: {
+            $nearSphere: {
+                $geometry: {
+                    type: "Point",
+                    coordinates: coords
+                },
+                $maxDistance: maxDist // in meters
+            }
+        }
+    } );
+
+    query.exec(function(err, locations) {
+        if (err) throw err;
+
+        console.log('locations: ', locations);
+        list = locations;
+        res.send(locations);
+    });
+
+});
+
+
 module.exports = router;
+

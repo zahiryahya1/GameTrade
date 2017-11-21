@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
+mongoose.Promise = Promise;
 var bcrypt = require('bcryptjs');
 
+var math = require('mathjs');
 
 // User Schema
 var UserSchema = mongoose.Schema({
@@ -29,14 +31,21 @@ var UserSchema = mongoose.Schema({
 		},
 		state: {
 			type: String,  "default" : ""
-		},
+		}
+	},
+	geo: {
+		type: [Number],
+		index: '2dsphere'
+	}
+
+/*
 		lng: {
 			type: Number, "default" : null
 		},
 		lat: {
 			type: Number, "default" : null
 		}
-	}
+*/
 });
 
 
@@ -138,4 +147,49 @@ module.exports.updateLocation = function(user, location, callback) {
                  	console.log('obj: ', obj);
                 });
 	user.save(callback);
+}
+
+
+module.exports.getUsersInRadius = function(data, callback) {
+
+	var list;
+    var radius = data.radius;
+    var lat = data.lat;
+    var lng = data.lng;
+
+
+    var mileToKilometer = 1.60934; // conversion from miles to km
+    var kilometerToMeter = 1000;
+    var maxDist = mileToKilometer * radius; 
+
+    // we need to convert the distance to radians
+    maxDist *= kilometerToMeter; 
+
+    // get coordinates [ <longitude> , <latitude> ]
+    var coords = [];
+    coords[0] = lng;
+    coords[1] = lat;
+/*
+    // might want to move this to the user model to make code cleaner
+    var query = User.find( {
+        geo: {
+            $nearSphere: {
+                $geometry: {
+                    type: "Point",
+                    coordinates: coords
+                },
+                $maxDistance: maxDist // in meters
+            }
+        }
+    } );
+
+    query.exec(function(err, locations) {
+        if (err) throw err;
+
+        console.log('locations: ', locations);
+
+        res.send(locations);
+    });
+*/
+	return list;
 }
