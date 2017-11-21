@@ -21,6 +21,7 @@ A online platform where people can trade games that they dont play for ones that
 - created js function to dynamically display games the user haves or wants
 - user can delete game from their list
 - user can update account location and password
+- use mongo db Geospatial framework to search for users within radius
 
 
 ## known bugs/issues
